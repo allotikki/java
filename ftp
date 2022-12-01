@@ -1,0 +1,72 @@
+Aim: Implementation of File Transfer Protocol
+GIVEN REQUIREMENTS: There are two hosts, Client and Server. The Client sends the
+name of the file it needs from the Server and the Server sends the contents of the file to
+the Client, where it is stored in a file.
+OBJECTIVE:
+To implement FTP application, where the Client on establishing a connection with the
+Server sends the name of the file it wishes to access remotely. The Server then sends
+the contents of the file to the Client, where it is stored.
+METHODOLOGY:
+Server:
+• Include the necessary header files.
+• Create a socket using socket function with family AF_INET, type as SOCK_STREAM.
+• Initialize server address to 0 using the bzero function.
+• Assign the sin_family to AF_INET, sin_addr to INADDR_ANY, sin_port to dynamically
+assigned port number.
+• Bind the local host address to socket using the bind function.
+• Listen on the socket for connection request from the client.
+• Accept connection request from the Client using accept function.
+• Within an infinite loop, receive the file name from the Client.
+• Open the file, read the file contents to a buffer and send the buffer to the Client
+Client:
+• Include the necessary header files.
+• Create a socket using socket function with family AF_INET, type as SOCK_STREAM.
+• Initialize server address to 0 using the bzero function.
+• Assign the sin_family to AF_INET.
+• Get the server IP address and the Port number from the console.
+• Using gethostbyname function assign it to a hostent structure, and assign it to
+sin_addr of the server address structure.
+• Within an infinite loop, send the name of the file to be viewed to the Server.
+• Receive the file contents, store it in a file and print it on the console.
+CODE:
+SERVER
+import socket
+port = 60000
+s = socket.socket()
+host = socket.gethostname() # Get local machine name s.bind((host, port)) # Bind to the
+port
+s.listen(5) # Now wait for client connection.
+
+20
+
+print 'Server listening....'
+while True:
+conn, addr = s.accept() # Establish connection with client. print 'Got connection from',
+addr
+data = conn.recv(1024)
+print('Server received', repr(data))
+filename='mytext.txt' f = open(filename,'rb') l = f.read(1024)
+while (l):
+conn.send(l) print('Sent ',repr(l)) l = f.read(1024)
+f.close()
+print('Done sending') conn.send('Thank you for connecting') conn.close()
+CLIENT:
+import socket # Import socket module
+s = socket.socket() # Create a socket object
+host = socket.gethostname() # Get local machine name port = 60000 # Reserve a port
+for your service.
+s.connect((host, port)) s.send("Hello server!")
+with open('received_file', 'wb') as f: print 'file opened'
+while True:
+print('receiving data...') data = s.recv(1024) print('data=%s', (data)) if not data:
+break
+# write data to a file f.write(data)
+f.close()
+print('Successfully get the file') s.close()
+print('connection closed')
+Output
+
+21
+
+RESULT: Thus, the FTP client-server communication is established and data is
+transferred between the client and server machine
