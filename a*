@@ -1,0 +1,83 @@
+2.	A* Algorithm:- 
+
+# best first search
+from queue import PriorityQueue
+
+graph = {
+    'S':[
+        ['I', 5],
+        ['C', 10],
+        ['A', 2],
+        ['B', 14]
+    ],
+    'A':[
+        ['G', 1],
+        ['E', 7],
+        ['S', 2]
+    ],
+    'B':[
+        ['S', 14],
+        ['D', 4],
+        ['H', 3]
+    ],
+    'C':[
+        ['S', 10]
+    ],
+    'D':[
+        ['B', 4],
+        ['H', 3],
+        ['F', 14]
+    ],
+    'E':[
+        ['A', 7],
+        ['G', 5],
+        ['F', 6]
+    ],
+    'F':[
+        ['D', 14],
+        ['E', 6]
+    ],
+    'G':[
+        ['A', 1],
+        ['E', 5]
+    ],
+    'H':[
+        ['B', 6],
+        ['D', 3]
+    ],
+    'I':[
+        ['S', 5]
+    ]
+}
+
+h = {
+    'S': 12,
+    'A': 11,
+    'B': 11,
+    'C': 14,
+    'D': 8,
+    'E': 8,
+    'F': 0,
+    'G': 10,
+    'H': 10,
+    'I': 13
+}
+# A*
+def a_star():
+    vis = []
+    pq = PriorityQueue()
+    pq.put((h['S'], 'S'))
+    vis.append('S')
+    while pq.empty() == False:
+        curr = pq.get()[1]
+        print(curr, end=" ")
+        if(curr == 'F'):
+            break
+        for temp in graph[curr]:
+            if temp[0] not in vis:
+                vis.append(temp[0])
+                pq.put((h[temp[0]] + temp[1] + h[temp[0]], temp[0]))
+                
+                
+a_star()
+print('\n')
